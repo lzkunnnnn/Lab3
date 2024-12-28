@@ -21,23 +21,24 @@ const onSubmit = async () => {
   try {
     await formRef.value?.validate()
 
-    const data = await login(form);
-    console.log('API 返回数据:', data); // Debug log
+    const data = await login(form)
+    console.log('API 返回数据:', data) // Debug log
 
-    if (!data || !data.id) { // 确保 data 存在
-      ElMessage.error('登录信息有误！');
-      throw new Error('登录信息有误');
+    if (!data || !data.id) {
+      // 确保 data 存在
+      ElMessage.error('登录信息有误！')
+      throw new Error('登录信息有误')
     }
 
-    store.saveToken(data); // 确保保存完整的用户数据
+    store.saveToken(data) // 确保保存完整的用户数据
 
-    ElMessage.success('登录成功!');
-    router.push((route.query.redirect as string) || '/');
+    ElMessage.success('登录成功!')
+    router.push((route.query.redirect as string) || '/')
   } catch (error) {
-    console.error('登录错误:', error);
-    ElMessage.error('登录失败，请重试！');
+    console.error('登录错误:', error)
+    ElMessage.error('登录失败，请重试！')
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
 }
 
