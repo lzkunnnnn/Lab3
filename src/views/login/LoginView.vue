@@ -3,57 +3,52 @@ import { login } from '@/api/users'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { useTokenStore } from '@/stores/mytoken'
 import { useRouter, useRoute } from 'vue-router'
+import { ref, reactive } from 'vue'
+
 const router = useRouter()
 const route = useRoute()
 const store = useTokenStore()
-//表单响应式数据
+
+// 表单响应式数据
 const form = reactive({
-/*   phone: '18201288771',
-  password: '111111', */
-    account: 'user1',
-    password: '12345',
-  
+  account: 'user1',
+  password: '123456',
 })
-//登录事件处理
+
+// 登录事件处理
 const onSubmit = async () => {
   isLoading.value = true
-  // 表单校验
-  await formRef.value?.validate().catch((err) => {
-    ElMessage.error('表单校验失败')
-    isLoading.value = false
-    throw err
-  })
+  try {
+    await formRef.value?.validate()
 
-  //正式发送登录请求
-  const data = await login(form).then((res) => {
-    if (!res.data.success) {
-      ElMessage.error('登录信息有误！')
-      isLoading.value = false
-      throw new Error('登录信息有误')
+    const data = await login(form);
+    console.log('API 返回数据:', data); // Debug log
+
+    if (!data || !data.id) { // 确保 data 存在
+      ElMessage.error('登录信息有误！');
+      throw new Error('登录信息有误');
     }
-    return res.data
-  })
 
-    console.log(data)
-    //保存token信息
-  store.saveToken(data.content)
+    store.saveToken(data); // 确保保存完整的用户数据
 
-    isLoading.value = false
-
-    ElMessage.success('登录成功!')
-    router.push((route.query.redirect as string) || '/')
+    ElMessage.success('登录成功!');
+    router.push((route.query.redirect as string) || '/');
+  } catch (error) {
+    console.error('登录错误:', error);
+    ElMessage.error('登录失败，请重试！');
+  } finally {
+    isLoading.value = false;
+  }
 }
 
-//定义表单校验规则
+// 定义表单校验规则
 const rules = reactive<FormRules>({
-    /* phone: [{ required: true, message: '用户名不能为空', trigger: 'blur' }], */
   account: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
   password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
 })
 
 // 定义是否登录加载中
 const isLoading = ref(false)
-
 const formRef = ref<FormInstance>()
 </script>
 
@@ -68,13 +63,11 @@ const formRef = ref<FormInstance>()
       size="large"
     >
       <h2>登录</h2>
-      <!-- <el-form-item label="用户名" prop="phone"> -->
       <el-form-item label="用户名" prop="account">
-        <!-- <el-input v-model="form.phone" /> -->
-         <el-input v-model="form.account" />
+        <el-input v-model="form.account" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password" />
+        <el-input v-model="form.password" type="password" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" :loading="isLoading">登录</el-button>
@@ -97,7 +90,7 @@ const formRef = ref<FormInstance>()
     padding: 30px;
     border-radius: 10px;
 
-    .el-form.item {
+    .el-form-item {
       margin-bottom: 20px;
     }
 
