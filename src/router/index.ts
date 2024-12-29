@@ -43,8 +43,8 @@ const router = createRouter({
     },
   ],
 })
-//路由守卫 
-/* router.beforeEach((to, from, next) => {
+//路由守卫
+router.beforeEach((to, from, next) => {
   if (to.matched.some((r) => r.meta?.requiresAuth)) {
     const store = useTokenStore()
     if (!store.token.name) {
@@ -53,6 +53,6 @@ const router = createRouter({
   }
 
   next() // 仅在没有重定向的情况下调用
-}) */
+})
 
 export default router

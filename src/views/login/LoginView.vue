@@ -30,7 +30,7 @@ const onSubmit = async () => {
       throw new Error('登录信息有误')
     }
 
-    store.saveToken(response.data) // 确保保存完整的用户数据
+    store.saveToken(response.data.data) // 确保保存完整的用户数据
 
     ElMessage.success('登录成功!')
     router.push((route.query.redirect as string) || '/')

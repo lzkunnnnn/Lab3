@@ -7,7 +7,7 @@ type LoginInfo = {
 }
 
 // 用户登录 - 返回数据类型
-type LoginResult = {
+/* type LoginResult = {
   id: string
   name: string
   account: string
@@ -16,11 +16,11 @@ type LoginResult = {
   createTime: string
   updateTime: string
   avatar: string
-}
+} */
 
 // 修改 login 函数，使用 LoginInfo 类型
 export const login = (loginInfo: LoginInfo) => {
-  return request<LoginResult>({
+  return request/* <LoginResult> */({
     method: 'POST',
     url: '/api/login',
     data: {
