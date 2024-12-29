@@ -21,16 +21,16 @@ const onSubmit = async () => {
   try {
     await formRef.value?.validate()
 
-    const data = await login(form)
-    console.log('API 返回数据:', data) // Debug log
+    const response = await login(form)
+    console.log('API 返回数据:', response) // Debug log
 
-    if (!data || !data.id) {
+    if (!response) {
       // 确保 data 存在
       ElMessage.error('登录信息有误！')
       throw new Error('登录信息有误')
     }
 
-    store.saveToken(data) // 确保保存完整的用户数据
+    store.saveToken(response.data) // 确保保存完整的用户数据
 
     ElMessage.success('登录成功!')
     router.push((route.query.redirect as string) || '/')

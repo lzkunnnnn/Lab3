@@ -23,6 +23,9 @@ export const login = (loginInfo: LoginInfo) => {
   return request<LoginResult>({
     method: 'POST',
     url: '/api/login',
-    data: `account=${loginInfo.account}&password=${loginInfo.password}`,
+    data: {
+      account: loginInfo.account,
+      password: loginInfo.password,
+    },
   })
 }

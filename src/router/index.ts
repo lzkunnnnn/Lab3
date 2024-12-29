@@ -43,16 +43,16 @@ const router = createRouter({
     },
   ],
 })
-//路由守卫 不管用？
-router.beforeEach((to, from, next) => {
+//路由守卫 
+/* router.beforeEach((to, from, next) => {
   if (to.matched.some((r) => r.meta?.requiresAuth)) {
     const store = useTokenStore()
-    if (!store.token.id) {
-      next({ name: 'login', query: { redirect: to.fullPath } })
+    if (!store.token.name) {
+      return next({ name: 'login', query: { redirect: to.fullPath } }) // 使用 return
     }
   }
 
-  next()
-})
+  next() // 仅在没有重定向的情况下调用
+}) */
 
 export default router
