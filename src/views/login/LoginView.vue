@@ -4,6 +4,7 @@ import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { useTokenStore } from '@/stores/mytoken'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, reactive } from 'vue'
+import axios from 'axios'
 
 const router = useRouter()
 const route = useRoute()
@@ -11,9 +12,40 @@ const store = useTokenStore()
 
 // 表单响应式数据
 const form = reactive({
-  account: 'user1',
-  password: '123456',
+  account: 'user0',
+  password: 'user0',
 })
+
+
+const submit = () =>{
+  axios.post('api/login', { account: form.account, password: form.password })
+  .then(response => {
+    // 从响应头中提取token
+    const token = response.headers['token'];
+    if (token) {
+      // 存储token到localStorage
+      localStorage.setItem('token',token);
+      console.log(token);
+
+// 设置Axios的全局请求拦截器
+axios.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers['token'] = `${token}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
+      router.push((route.query.redirect as string) || '/')
+
+    }
+  })
+  .catch(error => {
+    console.error('登录失败:', error);
+  });
+}
 
 // 登录事件处理
 const onSubmit = async () => {
@@ -31,6 +63,8 @@ const onSubmit = async () => {
     }
 
     store.saveToken(response.data.data) // 确保保存完整的用户数据
+    console.log(response.headers.token)
+    localStorage.setItem('token',response.headers.token)
 
     ElMessage.success('登录成功!')
     router.push((route.query.redirect as string) || '/')
@@ -51,6 +85,7 @@ const rules = reactive<FormRules>({
 // 定义是否登录加载中
 const isLoading = ref(false)
 const formRef = ref<FormInstance>()
+
 </script>
 
 <template>

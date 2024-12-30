@@ -29,3 +29,7 @@ export const login = (loginInfo: LoginInfo) => {
     },
   })
 }
+
+export const aLogin = () =>{
+  return 
+}

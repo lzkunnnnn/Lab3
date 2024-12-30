@@ -14,6 +14,10 @@ const router = createRouter({
       component: () => import('@/views/login/LoginView.vue'),
     },
     {
+      path: '/api/admin',
+      component: () =>import('@/views/AdminView.vue')
+    },
+    {
       path: '/',
       name: '',
       component: AppLayout,
@@ -24,6 +28,16 @@ const router = createRouter({
           path: '',
           name: 'home',
           component: IndexView,
+        },
+        {
+          path: '/admin',
+          name: 'admin',
+          component: () =>import('@/views/AdminView.vue'),
+          children : [{
+            path: '/getUsers',
+            name : 'getUsers',
+            component: () => import('@/views/UsersView.vue')
+          }]
         },
         {
           path: '/about',

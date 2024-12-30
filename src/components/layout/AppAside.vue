@@ -1,6 +1,5 @@
 <script setup lang="ts">
 //import { ref } from 'vue';
-
 import { isCollapse } from "./isCollapse"
 </script>
 
@@ -31,6 +30,14 @@ import { isCollapse } from "./isCollapse"
         </el-icon>
         <span>公告管理</span>
       </el-menu-item>
+
+      <el-menu-item index="/admin">
+        <el-icon>
+          <IEpConnection />
+        </el-icon>
+       <span>管理员入口</span>
+      </el-menu-item>
+
     </el-menu>
   </el-aside>
 </template>
