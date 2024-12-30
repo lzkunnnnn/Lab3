@@ -30,7 +30,7 @@ const users = ref([])
 const token = ref(localStorage.getItem('token'))
 //console.log(token.value)
 const loading = ref(true)
-onMounted(async () => {
+const getUser =async () => {
   try {
     const response = await axios.get('/api/admin/getUsers', {
       headers: {
@@ -42,8 +42,8 @@ onMounted(async () => {
   } catch (error) {
     console.log('请求失败', error)
   }
-})
-
+}
+onMounted(getUser)
 
 const userToDelete = ref('')
 //确认框
@@ -63,6 +63,7 @@ const deleteUser = async (id: string) => {
       },
     })
     console.log(response.data.data)
+    await getUser()
   } catch (error) {
     console.log(' 删除失败', error)
   }

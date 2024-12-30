@@ -1,6 +1,6 @@
 <template>
   <div class="form">
-    <el-form :model="form" :rules="rules">
+    <el-form :model="form" :rules="rules" ref="formRef">
       <el-form-item label="姓名" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -20,33 +20,56 @@
 
 <script setup lang="ts">
 import { addUser } from '@/api/admin'
-import { ElMessage } from 'element-plus'
 const form = reactive({
-  name: '',
-  account: '',
-  role: '',
+  name: null,
+  account: null,
+  role: null,
 })
+const formRef=ref(null)
 
-const rules = {
-  name: [{ required: true, message: '输入用户名', trigger: 'blur' }],
-  account: [{ required: true, message: '请输入账户', trigger: 'blur' }],
-  role: [{ required: true, message: '请选择角色', trigger: 'change' }],
-}
-
-const onSubmit = async () => {
-  try {
-    const response = await addUser(form)
-    console.log(response)
-
-    if (!response) {
-      ElMessage.error('添加失败')
-      throw new Error('失败')
-    }
-    alert('添加成功')
-  } catch (error) {
-    console.log(error)
+const spaceValidator = (rule, value, callback) => {
+  if (value && value.includes(' ')) {
+    callback(new Error('输入值不能包含空格'));
+  } else {
+    callback();
   }
 }
+
+const rules = {
+  name: [
+    { required: true, message: '输入用户名', trigger: 'blur' },
+    { validator: spaceValidator, trigger: 'blur' }
+  ],
+  account: [
+    { required: true, message: '请输入账户', trigger: 'blur' },
+    { validator: spaceValidator, trigger: 'blur' }
+  ],
+  role: [
+    { required: true, message: '请选择角色', trigger: 'change' },
+    // 角色选择不需要检查空格
+  ],
+}
+
+const onSubmit = () => {
+  formRef.value.validate((valid) => {
+    if (valid) {
+      addUser(form).then(response => {
+        if (response) {
+          alert('添加成功')
+          formRef.value.resetFields()
+        } else {
+          alert('添加失败')
+        }
+      }).catch(error => {
+        console.error('添加失败', error)
+      })
+    } else {
+      alert('非法输入')
+    }
+  })
+}
+
+
 </script>
 <style scoped>
 .form {
