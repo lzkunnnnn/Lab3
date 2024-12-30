@@ -34,16 +34,31 @@ const router = createRouter({
           path: '/admin',
           name: 'admin',
           component: () =>import('@/views/admin/AdminView.vue'),
-          children : [{
-            path: '/getUsers',
-            name : 'getUsers',
+          children : [
+            {
+              path:'',
+              component:()=>import('@/views/admin/UsersView.vue')
+            },
+            {
+            path: 'getUsers',
+            name: 'Users',
             component: () => import('@/views/admin/UsersView.vue')
           },
           {
-            path: '/addUser',
+            path: 'addUser',
             name: 'addUser',
             component:()=> import ('@/components/admin/AddUserForm.vue')
           },
+          {
+            path: 'getLabs',
+            name: 'Labs',
+            component:()=>import('@/views/admin/LabsViews.vue')
+          },
+          {
+            path: 'getAnnouncements',
+            name: 'Announcements',
+            component:()=> import('@/views/admin/AnnouncesView.vue')
+          }
           ]
         },
         {
