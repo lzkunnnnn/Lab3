@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import request from '@/utils/request'
+
 request(
   {
     method: 'GET',
@@ -12,6 +13,7 @@ request(
 ).then(res => {
   console.log(res)
 })
+
 </script>
 
 <template>

@@ -15,8 +15,9 @@ const router = createRouter({
     },
     {
       path: '/api/admin',
-      component: () =>import('@/views/AdminView.vue')
+      component: () =>import('@/views/admin/AdminView.vue')
     },
+
     {
       path: '/',
       name: '',
@@ -32,12 +33,18 @@ const router = createRouter({
         {
           path: '/admin',
           name: 'admin',
-          component: () =>import('@/views/AdminView.vue'),
+          component: () =>import('@/views/admin/AdminView.vue'),
           children : [{
             path: '/getUsers',
             name : 'getUsers',
-            component: () => import('@/views/UsersView.vue')
-          }]
+            component: () => import('@/views/admin/UsersView.vue')
+          },
+          {
+            path: '/addUser',
+            name: 'addUser',
+            component:()=> import ('@/components/admin/AddUserForm.vue')
+          },
+          ]
         },
         {
           path: '/about',
