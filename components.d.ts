@@ -7,6 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddAnnounceForm: typeof import('./src/components/admin/AddAnnounceForm.vue')['default']
+    AddLabForm: typeof import('./src/components/admin/AddLabForm.vue')['default']
     AddUserForm: typeof import('./src/components/admin/AddUserForm.vue')['default']
     AppAside: typeof import('./src/components/layout/AppAside.vue')['default']
     AppHeader: typeof import('./src/components/layout/AppHeader.vue')['default']
@@ -33,8 +35,11 @@ declare module 'vue' {
     ElOption: typeof import('element-plus/es')['ElOption']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElSlider: typeof import('element-plus/es')['ElSlider']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
