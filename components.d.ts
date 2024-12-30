@@ -11,7 +11,6 @@ declare module 'vue' {
     AppAside: typeof import('./src/components/layout/AppAside.vue')['default']
     AppHeader: typeof import('./src/components/layout/AppHeader.vue')['default']
     AppLayout: typeof import('./src/components/layout/AppLayout.vue')['default']
-    DeleteUserForm: typeof import('./src/components/admin/DeleteUserForm.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
