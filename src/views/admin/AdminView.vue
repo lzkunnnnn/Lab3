@@ -20,6 +20,9 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
 const activeTab = ref('Users')
+onMounted(() => {
+  activeTab.value = router.currentRoute.value.name
+})
 const router = useRouter()
 const show=()=>{
   router.push({name:activeTab.value})

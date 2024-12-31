@@ -8,7 +8,7 @@
 
     <el-table-column label="操作" width="180" fixed="right">
       <template v-slot="scope">
-        <el-button type="primary" size="small" @click="showDialog(scope.row.id, 1)">编辑</el-button>
+<!--         <el-button type="primary" size="small" @click="showDialog(scope.row.id, 1)">编辑</el-button> -->
         <el-button type="danger" size="small" @click="showDialog(scope.row.id, 2)">删除</el-button>
       </template>
     </el-table-column>
@@ -24,7 +24,7 @@
     </template>
   </el-dialog>
 
-  <el-dialog title="提示" v-model="editDialogVisible" width="30%">
+<!--   <el-dialog title="提示" v-model="editDialogVisible" width="30%">
     <span>编辑</span>
     <template v-slot:footer>
       <span class="dialog-footer">
@@ -32,10 +32,10 @@
         <el-button type="primary">确 定</el-button>
       </span>
     </template>
-  </el-dialog>
+  </el-dialog> -->
 
   <el-dialog title="添加公告" v-model="addDialogVisible" width="50%">
-    <AddAnnounceForm @add="getAnnouncements"></AddAnnounceForm>
+    <AddAnnounceForm @add="()=>{getAnnouncements();success()}"></AddAnnounceForm>
     <template v-slot:footer>
       <span class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
@@ -46,6 +46,14 @@
 <script setup lang="ts">
 import { deletex, get } from '@/api/admin'
 import { ref } from 'vue'
+
+const success = () => {
+  ElMessage({
+    message: '操作成功',
+    type: 'success'
+  });
+};
+
 
 const announcements = ref([])
 const loading = ref(true)
@@ -82,6 +90,7 @@ const deleteLab = async (id: string) => {
   try {
     const url = 'admin/announcements/' + id
     announcements.value = await deletex(url)
+    success()
   } catch (error) {
     console.log('删除失败', error)
   }

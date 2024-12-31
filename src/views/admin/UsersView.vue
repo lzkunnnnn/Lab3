@@ -38,7 +38,7 @@
   </el-dialog>
 
   <el-dialog title="添加用户" v-model="addDialogVisible" width="30%">
-    <AddUserForm @add="getUser"></AddUserForm>
+    <AddUserForm @add="()=>{getUser();success()}"></AddUserForm>
     <template v-slot:footer>
       <span class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
@@ -54,6 +54,12 @@ import { deletex, get } from '@/api/admin'
 import axios from '@/stores/axios'
 import { onMounted } from 'vue'
 import AddUserForm from '@/components/admin/AddUserForm.vue'
+const success = () => {
+  ElMessage({
+    message: '操作成功',
+    type: 'success'
+  });
+};
 
 //获取用户
 const users = ref([])
@@ -82,6 +88,7 @@ const deleteUser = async (id: string) => {
   const url = 'admin/users/' + id
   try {
     users.value=await deletex(url)
+    success()
   } catch (error) {
     console.log('删除失败', error)
   }
@@ -102,6 +109,7 @@ const resetPassword = async (account: string) => {
   try {
     const response = await axios.put(url)
     console.log(response.data)
+    success()
   } catch (e) {
     console.log('失败')
   }

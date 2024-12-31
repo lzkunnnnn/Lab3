@@ -1,13 +1,13 @@
 <template>
   <div class="form">
-    <el-form :model="form" :rules="rules" ref="formRef">
+    <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
       <el-form-item label="标题" prop="title">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
         <el-input v-model="form.content"></el-input>
       </el-form-item>
-      <el-button type="primary" @click="onSubmit">submit</el-button>
+      <el-button type="primary" @click="onSubmit">提交</el-button>
     </el-form>
   </div>
 </template>
@@ -43,7 +43,6 @@ const onSubmit = () => {
       addAnnouncement(form)
         .then((response) => {
           if (response) {
-            alert('添加成功')
             emit('add')
             formRef.value!.resetFields()
           } else {

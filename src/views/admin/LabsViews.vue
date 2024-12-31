@@ -4,7 +4,7 @@
   <el-table :data="labs" style="width: 100%" v-loading="loading">
     <el-table-column prop="id" label="ID" width="180"></el-table-column>
     <el-table-column prop="name" label="名称" width="80"></el-table-column>
-    <el-table-column prop="manager" label="管理员" width="100"></el-table-column>
+    <el-table-column prop="manage" label="管理员" width="100"></el-table-column>
     <el-table-column prop="quantity" label="可容纳人数" width="100"></el-table-column>
     <el-table-column prop="description" label="描述" width="180"></el-table-column>
     <el-table-column prop="state" label="状态" width="60"></el-table-column>
@@ -17,31 +17,37 @@
     </el-table-column>
   </el-table>
 
-  <el-dialog title="提示" v-model="deleteDialogVisible" width="30%">
+  <el-dialog title="提示" v-model="deleteDialogVisible" width="30%" :show-close="false">
     <span>确认删除</span>
     <template v-slot:footer>
       <span class="dialog-footer">
-        <el-button @click="deleteDialogVisible = false">取 消</el-button>
+        <el-button @click="closeDialog">取 消</el-button>
         <el-button type="primary" @click="deleteLab(selectedLabId)">确 定</el-button>
       </span>
     </template>
   </el-dialog>
 
-  <el-dialog title="提示" v-model="editDialogVisible" width="30%">
-    <span>编辑</span>
+  <el-dialog
+    title="编辑"
+    v-model="editDialogVisible"
+    width="36%"
+    :show-close="false"
+    :destroy-on-close="true"
+  >
+    <UpdateLabForm :toEditLabId="selectedLabId"></UpdateLabForm>
     <template v-slot:footer>
       <span class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary">确 定</el-button>
+        <el-button @click="closeDialog">取 消</el-button>
+        <el-button type="primary" @click="closeDialog">确 定</el-button>
       </span>
     </template>
   </el-dialog>
 
-  <el-dialog title="添加实验室" v-model="addDialogVisible" width="50%">
-    <AddLabForm @add="getLabs"></AddLabForm>
+  <el-dialog title="添加实验室" v-model="addDialogVisible" width="50%" :show-close="true">
+    <AddLabForm @add="()=>{getLabs();success()}"></AddLabForm>
     <template v-slot:footer>
       <span class="dialog-footer">
-        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button @click="closeDialog">取 消</el-button>
       </span>
     </template>
   </el-dialog>
@@ -50,7 +56,16 @@
 <script setup lang="ts">
 import { deletex, get } from '@/api/admin'
 import AddLabForm from '@/components/admin/AddLabForm.vue'
+import UpdateLabForm from '@/components/admin/UpdateLabForm.vue'
 import { ref } from 'vue'
+
+const success = () => {
+  ElMessage({
+    message: '操作成功',
+    type: 'success'
+  });
+};
+
 const labs = ref([])
 const loading = ref(true)
 
@@ -82,10 +97,18 @@ const showDialog = (id: string, num: number) => {
   selectedLabId.value = id
 }
 
+const closeDialog = () => {
+  editDialogVisible.value = false
+  addDialogVisible.value = false
+  deleteDialogVisible.value = false
+  getLabs()
+}
+
 const deleteLab = async (id: string) => {
   try {
     const url = 'admin/labs/' + id
     labs.value = await deletex(url)
+    success()
   } catch (error) {
     console.log('删除失败', error)
   }

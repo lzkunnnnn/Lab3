@@ -1,5 +1,5 @@
 <template>
-  <div class="form">
+
     <el-form :model="form" :rules="rules" ref="formRef">
       <el-form-item label="姓名" prop="name">
         <el-input v-model="form.name"></el-input>
@@ -13,9 +13,9 @@
           <el-option label="user" value="user"></el-option>
         </el-select>
       </el-form-item>
-      <el-button type="primary" @click="onSubmit">submit</el-button>
+      <el-button type="primary" @click="onSubmit">提交</el-button>
     </el-form>
-  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -34,7 +34,6 @@ const spaceValidator = (rule, value, callback) => {
     callback()
   }
 }
-
 
 const rules = {
   name: [
@@ -57,8 +56,7 @@ const onSubmit = () => {
       addUser(form)
         .then((response) => {
           if (response) {
-            alert('添加成功')
-            emit('add','')
+            emit('add', '')
             formRef.value.resetFields()
           } else {
             alert('添加失败')

@@ -1,6 +1,5 @@
 <template>
-  <div class="form">
-    <el-form :model="form" :rules="rules" ref="formRef">
+    <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -20,12 +19,12 @@
         <el-input v-model="form.description"></el-input>
       </el-form-item>
 
-      <el-button type="primary" @click="onSubmit">submit</el-button>
+      <el-button type="primary" @click="onSubmit">提交</el-button>
     </el-form>
-  </div>
 </template>
 <script setup lang="ts">
-import { addLab } from '@/api/admin'
+import { addLab} from '@/api/admin'
+
 const form = reactive({
   name: null,
   manager: null,
@@ -62,7 +61,6 @@ const onSubmit = () => {
       addLab(form)
         .then((response) => {
           if (response) {
-            alert('添加成功')
             emit('add')
             formRef.value.resetFields()
           } else {
