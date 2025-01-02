@@ -1,6 +1,7 @@
 import AppLayout from '@/components/layout/AppLayout.vue'
 import { useTokenStore } from '@/stores/mytoken'
 import IndexView from '@/views/indexView.vue'
+import CourseView from '@/views/CourseView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 //const store = useTokenStore()
 //import LoginView from '@/views/login/LoginView.vue'
@@ -29,6 +30,11 @@ const router = createRouter({
           path: '',
           name: 'home',
           component: IndexView,
+        },
+        {
+          path: '/courseview',
+          name: 'courseview',
+          component: CourseView,
         },
         {
           path: '/admin',

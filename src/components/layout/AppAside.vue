@@ -17,7 +17,7 @@ import { isCollapse } from "./isCollapse"
         <span>用户管理</span>
       </el-menu-item> -->
 
-      <el-menu-item index="/CourseTableView">
+      <el-menu-item index="/CourseView">
         <el-icon>
           <IEpCalendar />
         </el-icon>
