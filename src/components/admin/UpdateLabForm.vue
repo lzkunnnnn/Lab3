@@ -10,7 +10,7 @@
       <el-input v-model="form.manage"></el-input>
     </el-form-item>
     <el-form-item label="编辑状态" prop="state">
-      <el-input v-model="form.state"></el-input>
+      <el-input v-model="form.state" placeholder="不超过255"></el-input>
     </el-form-item>
     <el-form-item label="编辑实验室描述" prop="desc">
       <el-input type="textarea" v-model="form.description"></el-input>

@@ -38,13 +38,21 @@ const onSubmit = async () => {
           userInfo: userInfo, // 也可以传递更多相关数据，比如完整用户信息
         },
       })
-      ElMessage.success('登录成功!')
+      //ElMessage.success('登录成功!')
       alert('登录成功！')
     }
-    //router.push((route.query.redirect as string) || '/')
+
+    store.saveToken(response.data.data) // 确保保存完整的用户数据
+    console.log(response.headers.token)
+    console.log(response.headers.role)
+    localStorage.setItem('token', response.headers.token)
+    localStorage.setItem('role', response.headers.role)
+
+    //ElMessage.success('登录成功!')
+    router.push((route.query.redirect as string) || '/')
   } catch (error) {
     console.error('登录错误:', error)
-    ElMessage.error('登录失败，请重试！')
+    //ElMessage.error('登录失败，请重试！')
     alert('登录失败，请重试！')
   } finally {
     isLoading.value = false
