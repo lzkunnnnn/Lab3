@@ -101,18 +101,23 @@ const formRef = ref<FormInstance>()
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url('../../assets/img/主楼.jpg'); // 添加背景图片设置，这里要确保路径正确且资源可访问
+  background-size: cover; // 让背景图片覆盖整个区域，可根据需求调整为其他值，如contain等
+  background-position: center; // 图片居中显示，也可调整位置属性
+  background-repeat: no-repeat; // 不重复显示图片
 
-  .el-form {
+ .el-form {
     width: 300px;
     background-color: white;
     padding: 30px;
     border-radius: 10px;
+    opacity: 0.92;
 
-    .el-form-item {
+   .el-form-item {
       margin-bottom: 20px;
     }
 
-    .el-button {
+   .el-button {
       width: 100%;
       margin-top: 30px;
     }
