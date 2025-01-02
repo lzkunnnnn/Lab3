@@ -30,6 +30,7 @@ const router = createRouter({
           name: 'home',
           component: IndexView,
         },
+
         {
           path: '/admin',
           name: 'admin',
@@ -69,6 +70,15 @@ const router = createRouter({
             },
           ],
         },
+        {
+          path: '/notice',
+          name:'notice',
+          component: ()=> import('@/views/NoticeView.vue'),
+          children:[
+            
+          ]
+        }
+        ,
         {
           path: '/about',
           name: 'about',
