@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppAside from './AppAside.vue'
 import AppHeader from './AppHeader.vue'
+
 </script>
 
 <template>

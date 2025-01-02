@@ -23,21 +23,29 @@ const onSubmit = async () => {
     const response = await login(form)
     console.log('API 返回数据:', response) // Debug log
 
-    if (!response) {
+    if (response.data.code === 400) {
       // 确保 data 存在
       ElMessage.error('登录信息有误！')
       throw new Error('登录信息有误')
+    } else {
+      store.saveToken(response.data.data)
+      const token = response.headers.token
+      const userInfo = response.data.data // 假设userInfo是包含用户详细信息的数据对象
+      router.push({
+        path: (route.query.redirect as string) || '/',
+        query: {
+          token: token, // 将token作为路由参数传递
+          userInfo: userInfo, // 也可以传递更多相关数据，比如完整用户信息
+        },
+      })
+      ElMessage.success('登录成功!')
+      alert('登录成功！')
     }
-
-    store.saveToken(response.data.data) // 确保保存完整的用户数据
-    console.log(response.headers.token)
-    localStorage.setItem('token', response.headers.token)
-
-    ElMessage.success('登录成功!')
-    router.push((route.query.redirect as string) || '/')
+    //router.push((route.query.redirect as string) || '/')
   } catch (error) {
     console.error('登录错误:', error)
     ElMessage.error('登录失败，请重试！')
+    alert('登录失败，请重试！')
   } finally {
     isLoading.value = false
   }
@@ -58,10 +66,8 @@ const formRef = ref<FormInstance>()
   <div class="login">
     <el-form
       :model="form"
-      
       :rules="rules"
       ref="formRef"
-
       label-width="120px"
       label-position="top"
       size="large"

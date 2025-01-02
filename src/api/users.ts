@@ -31,7 +31,7 @@ export const login = (loginInfo: LoginInfo) => {
 }
 
 
-
-export const aLogin = () =>{
+/* export const aLogin = () =>{
   return
 }
+ */
