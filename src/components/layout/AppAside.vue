@@ -10,30 +10,30 @@ import { isCollapse } from "./isCollapse"
         <img src="@/assets/img/logo.png" alt="" />
         <h1>实验室预约</h1>
       </a>
-      <el-menu-item index="/MenusView">
+      <!-- <el-menu-item index="/MenusView">
         <el-icon>
           <IEpConnection />
         </el-icon>
         <span>用户管理</span>
-      </el-menu-item>
+      </el-menu-item> -->
 
       <el-menu-item index="/CourseTableView">
         <el-icon>
-          <IEpConnection />
+          <IEpCalendar />
         </el-icon>
         <span>课程管理</span>
       </el-menu-item>
 
       <el-menu-item index="/NoticeView">
         <el-icon>
-          <IEpConnection />
+          <IEpMessageBox />
         </el-icon>
-        <span>公告管理</span>
+        <span>公告</span>
       </el-menu-item>
 
       <el-menu-item index="/admin/">
         <el-icon>
-          <IEpConnection />
+          <IEpAvatar />
         </el-icon>
        <span>管理员入口</span>
       </el-menu-item>
