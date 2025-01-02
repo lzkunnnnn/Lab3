@@ -24,7 +24,7 @@ import { isCollapse } from "./isCollapse"
         <span>课程管理</span>
       </el-menu-item>
 
-      <el-menu-item index="/NoticeView">
+      <el-menu-item index="/notice/">
         <el-icon>
           <IEpMessageBox />
         </el-icon>
