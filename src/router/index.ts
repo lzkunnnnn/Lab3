@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
 import AppLayout from '@/components/layout/AppLayout.vue'
-import IndexView from '@/views/indexView.vue'
 import { useTokenStore } from '@/stores/mytoken'
+import IndexView from '@/views/indexView.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 //const store = useTokenStore()
 //import LoginView from '@/views/login/LoginView.vue'
 
@@ -15,7 +15,7 @@ const router = createRouter({
     },
     {
       path: '/api/admin',
-      component: () =>import('@/views/admin/AdminView.vue')
+      component: () => import('@/views/admin/AdminView.vue'),
     },
 
     {
@@ -33,33 +33,41 @@ const router = createRouter({
         {
           path: '/admin',
           name: 'admin',
-          component: () =>import('@/views/admin/AdminView.vue'),
-          children : [
+          component: () => import('@/views/admin/AdminView.vue'),
+          beforeEnter: (to, from, next) => {
+            // 检查用户是否为管理员
+            if (localStorage.getItem('role') == 'admin') {
+              next() // 用户符合条件，允许访问
+            } else {
+              next('/') // 用户不符合条件，重定向到默认页面
+            }
+          },
+          children: [
             {
-              path:'',
-              component:()=>import('@/views/admin/UsersView.vue')
+              path: '',
+              component: () => import('@/views/admin/UsersView.vue'),
             },
             {
-            path: 'getUsers',
-            name: 'Users',
-            component: () => import('@/views/admin/UsersView.vue')
-          },
-          {
-            path: 'addUser',
-            name: 'addUser',
-            component:()=> import ('@/components/admin/AddUserForm.vue')
-          },
-          {
-            path: 'getLabs',
-            name: 'Labs',
-            component:()=>import('@/views/admin/LabsViews.vue')
-          },
-          {
-            path: 'getAnnouncements',
-            name: 'Announcements',
-            component:()=> import('@/views/admin/AnnouncesView.vue')
-          }
-          ]
+              path: 'getUsers',
+              name: 'Users',
+              component: () => import('@/views/admin/UsersView.vue'),
+            },
+            {
+              path: 'addUser',
+              name: 'addUser',
+              component: () => import('@/components/admin/AddUserForm.vue'),
+            },
+            {
+              path: 'getLabs',
+              name: 'Labs',
+              component: () => import('@/views/admin/LabsViews.vue'),
+            },
+            {
+              path: 'getAnnouncements',
+              name: 'Announcements',
+              component: () => import('@/views/admin/AnnouncesView.vue'),
+            },
+          ],
         },
         {
           path: '/about',
