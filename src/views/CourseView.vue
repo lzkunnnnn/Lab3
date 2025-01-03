@@ -49,7 +49,7 @@
           <td class="time-cell time-cell-7-8">7-8</td>
         </tr>
         <!-- 课程信息 -->
-        <tr class="class-tr" v-for="(weekindex, weekIndex) in 18" :key="weekIndex">
+        <tr class="class-tr" v-for="(weekindex, index) in 18" :key="index">
           <td style="padding: 2px 0px" class="week-cell week-cell-dark">
             第
             <br />
@@ -57,14 +57,15 @@
             <br />
             周
           </td>
-          <td class="class-td" v-for="(weekdayindex, weekdayIndex) in datetd" :key="weekdayIndex">
-            <div
-              class="class-info"
-              v-if="getCourseByWeekDaySection(weekindex, weekdayindex.time)"
-            >
-              <span class="course-teacher">{{ getCourseByWeekDaySection(weekindex, weekdayindex.time).teacherName }}</span>
+
+          <td class="class-td" v-for="(c, index) in datetd" :key="index">
+            <div class="class-info" v-if="getCourseByWeekDaySection(weekindex, c.section,c.dayOfWeek)">
+              <span class="course-teacher"> </span>
               <br />
-              <span class="course-name">{{ getCourseByWeekDaySection(weekindex, weekdayindex.time).courseName }}</span>
+              {{ getCourseByWeekDaySection(weekindex, c.section,c.dayOfWeek).teacherName }}
+      
+              <span class="course-name"></span>
+              {{ getCourseByWeekDaySection(weekindex, c.section,c.dayOfWeek).courseName }}
             </div>
             <div v-else>
               <span class="no-course">无课程</span>
@@ -77,8 +78,8 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import axios from '@/stores/axios';
+import axios from '@/stores/axios'
+import { reactive, ref } from 'vue'
 
 // 周和天的信息
 const datelist = reactive([
@@ -88,112 +89,123 @@ const datelist = reactive([
   { id: 4, week: '星期四' },
   { id: 5, week: '星期五' },
   { id: 6, week: '星期六' },
-  { id: 7, week: '星期日' }
-]);
-
+  { id: 7, week: '星期日' },
+])
 const datetd = reactive([
-  { time: 1, week: '星期一' },
-  { time: 3, week: '星期一' },
-  { time: 5, week: '星期一' },
-  { time: 7, week: '星期一' },
-  { time: 1, week: '星期二' },
-  { time: 3, week: '星期二' },
-  { time: 5, week: '星期二' },
-  { time: 7, week: '星期二' },
-  { time: 1, week: '星期三' },
-  { time: 3, week: '星期三' },
-  { time: 5, week: '星期三' },
-  { time: 7, week: '星期三' },
-  { time: 1, week: '星期四' },
-  { time: 3, week: '星期四' },
-  { time: 5, week: '星期四' },
-  { time: 7, week: '星期四' },
-  { time: 1, week: '星期五' },
-  { time: 3, week: '星期五' },
-  { time: 5, week: '星期五' },
-  { time: 7, week: '星期五' },
-  { time: 1, week: '星期六' },
-  { time: 3, week: '星期六' },
-  { time: 5, week: '星期六' },
-  { time: 7, week: '星期六' },
-  { time: 1, week: '星期日' },
-  { time: 3, week: '星期日' },
-  { time: 5, week: '星期日' },
-  { time: 7, week: '星期日' },
-]);
+  { section: 1, dayOfWeek: 1 },
 
-const courses = ref<any[]>([]); // 用于保存课程数据
-const labId = ref(''); // 用于绑定输入的实验室ID
-const loading = ref(false); // 加载状态
-const errorMessage = ref<string | null>(null); // 错误信息提示
+  { section: 2, dayOfWeek: 1 },
 
-// 从本地存储中获取token
-const getToken = (): string => {
-  return localStorage.getItem('token') || '';
-};
+  { section: 3, dayOfWeek: 1 },
+
+  { section: 4, dayOfWeek: 1 },
+
+  { section: 1, dayOfWeek: 2 },
+
+  { section: 2, dayOfWeek: 2 },
+
+  { section: 3, dayOfWeek: 2 },
+
+  { section: 4, dayOfWeek: 2 },
+
+  { section: 1, dayOfWeek: 4 },
+
+  { section: 2, dayOfWeek: 3 },
+
+  { section: 3, dayOfWeek: 3 },
+
+  { section: 4, dayOfWeek: 3 },
+
+  { section: 1, dayOfWeek: 4 },
+
+  { section: 2, dayOfWeek: 4 },
+
+  { section: 3, dayOfWeek: 4 },
+
+  { section: 4, dayOfWeek: 4 },
+
+  { section: 1, dayOfWeek: 5 },
+
+  { section: 2, dayOfWeek: 5 },
+
+  { section: 3, dayOfWeek: 5 },
+
+  { section: 4, dayOfWeek: 5 },
+
+  { section: 1, dayOfWeek: 6 },
+
+  { section: 2, dayOfWeek: 6 },
+
+  { section: 3, dayOfWeek: 6 },
+
+  { section: 4, dayOfWeek: 6 },
+
+  { section: 1, dayOfWeek: 7 },
+
+  { section: 2, dayOfWeek: 7 },
+
+  { section: 3, dayOfWeek: 7 },
+
+  { section: 4, dayOfWeek: 7 },
+])
+const courses = ref<any[]>([]) // 用于保存课程数据
+const labId = ref('') // 用于绑定输入的实验室ID
+const loading = ref(false) // 加载状态
+const errorMessage = ref<string | null>(null) // 错误信息提示
+const appointments = ref([])
 
 const fetchReservations = async () => {
-  loading.value = true;
-  errorMessage.value = null;
+  loading.value = true
+  errorMessage.value = null
   try {
-    const response = await axios.get(`user/lab/${labId.value}/reservations`, {
-    });
-    console.log("Response data:", response.data);
+
+    const response = await axios.get(`user/lab/${labId.value}/reservations`)
+    console.log(response)
+    appointments.value=response.data.data
+    console.log(appointments.value)
     if (response.data && response.data.code === 200) {
-      courses.value = response.data.data;
+      courses.value = response.data.data
     } else {
-      console.error("Unexpected response structure:", response.data);
-      errorMessage.value = '返回数据结构不符合预期，请检查后端接口';
+      console.error('Unexpected response structure:', response.data)
+      errorMessage.value = '返回数据结构不符合预期，请检查后端接口'
     }
+
   } catch (error) {
-    console.error('Failed to fetch reservations:', error);
+    console.error('Failed to fetch reservations:', error)
     if (error.response && error.response.status === 401) {
-      console.error('未授权: 请重新登录。');
-      errorMessage.value = '未授权，请重新登录';
+      console.error('未授权: 请重新登录。')
+      errorMessage.value = '未授权，请重新登录'
     } else {
-      errorMessage.value = '网络请求出现问题，请稍后再试';
+      errorMessage.value = '网络请求出现问题，请稍后再试'
     }
   }
-  loading.value = false;
-};
+  loading.value = false
+}
 
 // 根据周、天、节次获取课程（修复查找逻辑，确保准确匹配课程）
-const getCourseByWeekDaySection = (week: number, time: number) => {
-  const dayOfWeek = convertTimeToDayOfWeek(time);
-  return courses.value.find(
-    (course) => {
-      return course.week === week && course.dayOfWeek === dayOfWeek && week <= 18;
-    }
-  ) || null;
-};
-
-// 将时间节次准确转换为星期几（1对应星期一，2对应星期二，以此类推）
-const convertTimeToDayOfWeek = (time: number): number => {
-  const dayMap = {
-    1: 1, // 1对应星期一
-    2: 2, // 3对应星期一
-    3: 1, // 4对应星期二
-    4: 2, // 5对应星期三
-    5: 3, // 6对应星期四
-    6: 4, // 7对应星期五
-    7: 5,
-    8: 6
-  };
-  return dayMap[time];
-};
-
+const getCourseByWeekDaySection = (week: number, section: number, dayOfWeek: number) => {
+  return (
+    appointments.value.find((course) => {
+      return (
+        course.week === week &&
+        course.dayOfWeek === dayOfWeek &&
+        course.section === section &&
+        week <= 18
+      )
+    }) || null
+  )
+}
 </script>
 
 <style scoped>
 /* 整体页面容器样式 */
 .page-container {
-  padding: 20px;
   background-color: #f8f9fa; /* 浅灰色背景，使页面更柔和 */
   font-family: Arial, sans-serif; /* 设置通用字体 */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  overflow-x: scroll;
 }
 
 /* 输入框和按钮所在区域样式 */
