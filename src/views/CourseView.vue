@@ -2,7 +2,9 @@
   <div class="page-container">
     <div class="input-section">
       <!-- 输入实验室ID的表单 -->
-      <input v-model="labId" placeholder="请输入实验室ID" class="input-field" />
+       <el-select v-model="labId" style="width:300px;">
+          <el-option v-for="(l,index) in labs" :key="index" :value="l.id" :label="l.name+'实验室'"></el-option>
+       </el-select>
       <button @click="fetchReservations" class="fetch-button">查询</button>
     </div>
     <div v-if="loading" class="loading-message">正在加载课程数据...</div>
@@ -59,13 +61,16 @@
           </td>
 
           <td class="class-td" v-for="(c, index) in datetd" :key="index">
-            <div class="class-info" v-if="getCourseByWeekDaySection(weekindex, c.section,c.dayOfWeek)">
+            <div
+              class="class-info"
+              v-if="getCourseByWeekDaySection(weekindex, c.section, c.dayOfWeek)"
+            >
               <span class="course-teacher"> </span>
               <br />
-              {{ getCourseByWeekDaySection(weekindex, c.section,c.dayOfWeek).teacherName }}
-      
+              {{ getCourseByWeekDaySection(weekindex, c.section, c.dayOfWeek).teacherName }}
+
               <span class="course-name"></span>
-              {{ getCourseByWeekDaySection(weekindex, c.section,c.dayOfWeek).courseName }}
+              {{ getCourseByWeekDaySection(weekindex, c.section, c.dayOfWeek).courseName }}
             </div>
             <div v-else>
               <span class="no-course">无课程</span>
@@ -80,6 +85,7 @@
 <script setup lang="ts">
 import axios from '@/stores/axios'
 import { reactive, ref } from 'vue'
+import { get } from '@/api/admin'
 
 // 周和天的信息
 const datelist = reactive([
@@ -93,59 +99,32 @@ const datelist = reactive([
 ])
 const datetd = reactive([
   { section: 1, dayOfWeek: 1 },
-
   { section: 2, dayOfWeek: 1 },
-
   { section: 3, dayOfWeek: 1 },
-
   { section: 4, dayOfWeek: 1 },
-
   { section: 1, dayOfWeek: 2 },
-
   { section: 2, dayOfWeek: 2 },
-
   { section: 3, dayOfWeek: 2 },
-
   { section: 4, dayOfWeek: 2 },
-
   { section: 1, dayOfWeek: 4 },
-
   { section: 2, dayOfWeek: 3 },
-
   { section: 3, dayOfWeek: 3 },
-
   { section: 4, dayOfWeek: 3 },
-
   { section: 1, dayOfWeek: 4 },
-
   { section: 2, dayOfWeek: 4 },
-
   { section: 3, dayOfWeek: 4 },
-
   { section: 4, dayOfWeek: 4 },
-
   { section: 1, dayOfWeek: 5 },
-
   { section: 2, dayOfWeek: 5 },
-
   { section: 3, dayOfWeek: 5 },
-
   { section: 4, dayOfWeek: 5 },
-
   { section: 1, dayOfWeek: 6 },
-
   { section: 2, dayOfWeek: 6 },
-
   { section: 3, dayOfWeek: 6 },
-
   { section: 4, dayOfWeek: 6 },
-
   { section: 1, dayOfWeek: 7 },
-
   { section: 2, dayOfWeek: 7 },
-
   { section: 3, dayOfWeek: 7 },
-
   { section: 4, dayOfWeek: 7 },
 ])
 const courses = ref<any[]>([]) // 用于保存课程数据
@@ -158,10 +137,9 @@ const fetchReservations = async () => {
   loading.value = true
   errorMessage.value = null
   try {
-
     const response = await axios.get(`user/lab/${labId.value}/reservations`)
     console.log(response)
-    appointments.value=response.data.data
+    appointments.value = response.data.data
     console.log(appointments.value)
     if (response.data && response.data.code === 200) {
       courses.value = response.data.data
@@ -169,7 +147,6 @@ const fetchReservations = async () => {
       console.error('Unexpected response structure:', response.data)
       errorMessage.value = '返回数据结构不符合预期，请检查后端接口'
     }
-
   } catch (error) {
     console.error('Failed to fetch reservations:', error)
     if (error.response && error.response.status === 401) {
@@ -195,6 +172,21 @@ const getCourseByWeekDaySection = (week: number, section: number, dayOfWeek: num
     }) || null
   )
 }
+const labs=ref([])
+const getLabs = async () => {
+  const url = 'user/labs'
+  try {
+    labs.value = await get(url)
+    loading.value = true
+  } catch (error) {
+    console.log('请求失败', error)
+  }
+  loading.value = false
+}
+onMounted(getLabs)
+console.log(labs)
+
+
 </script>
 
 <style scoped>
