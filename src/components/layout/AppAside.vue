@@ -1,6 +1,6 @@
 <script setup lang="ts">
 //import { ref } from 'vue';
-import { isCollapse } from "./isCollapse"
+import { isCollapse } from './isCollapse'
 </script>
 
 <template>
@@ -23,7 +23,7 @@ import { isCollapse } from "./isCollapse"
         </el-icon>
         <span>课程管理</span>
       </el-menu-item>
-      <el-menu-item index="/ReservationView">
+      <el-menu-item index="/appoint">
         <el-icon>
           <IEpTimer />
         </el-icon>
@@ -37,20 +37,12 @@ import { isCollapse } from "./isCollapse"
         <span>公告</span>
       </el-menu-item>
 
-      <el-menu-item index="/appoint/">
-        <el-icon>
-          <IEpMessageBox />
-        </el-icon>
-        <span>实验室预约</span>
-      </el-menu-item>
-
       <el-menu-item index="/admin/">
         <el-icon>
           <IEpAvatar />
         </el-icon>
-       <span>管理员入口</span>
+        <span>管理员入口</span>
       </el-menu-item>
-
     </el-menu>
   </el-aside>
 </template>
@@ -70,7 +62,7 @@ import { isCollapse } from "./isCollapse"
   &.el-menu--collapse {
     width: 60px;
     & h1 {
-        display: none;
+      display: none;
     }
   }
 }
