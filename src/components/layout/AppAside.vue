@@ -23,13 +23,7 @@ import { isCollapse } from "./isCollapse"
         </el-icon>
         <span>课程管理</span>
       </el-menu-item>
-      <el-menu-item index="/ReservationView">
-        <el-icon>
-          <IEpTimer />
-        </el-icon>
-        <span>实验室预约</span>
-      </el-menu-item>
-
+      
       <el-menu-item index="/notice/">
         <el-icon>
           <IEpMessageBox />

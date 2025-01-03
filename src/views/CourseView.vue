@@ -78,7 +78,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import axios from 'axios';
+import axios from '@/stores/axios';
 
 // 周和天的信息
 const datelist = reactive([
@@ -135,12 +135,8 @@ const getToken = (): string => {
 const fetchReservations = async () => {
   loading.value = true;
   errorMessage.value = null;
-  const token = getToken();
   try {
-    const response = await axios.get(`api/user/lab/${labId.value}/reservations`, {
-      headers: {
-        'token': 'Barear ${token}'
-      }
+    const response = await axios.get(`user/lab/${labId.value}/reservations`, {
     });
     console.log("Response data:", response.data);
     if (response.data && response.data.code === 200) {
