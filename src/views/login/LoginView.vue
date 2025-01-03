@@ -31,13 +31,6 @@ const onSubmit = async () => {
       store.saveToken(response.data.data)
       const token = response.headers.token
       const userInfo = response.data.data // 假设userInfo是包含用户详细信息的数据对象
-      router.push({
-        path: (route.query.redirect as string) || '/',
-        query: {
-          token: token, // 将token作为路由参数传递
-          userInfo: userInfo, // 也可以传递更多相关数据，比如完整用户信息
-        },
-      })
       //ElMessage.success('登录成功!')
       alert('登录成功！')
     }

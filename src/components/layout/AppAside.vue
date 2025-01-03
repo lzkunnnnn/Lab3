@@ -6,7 +6,7 @@ import { isCollapse } from "./isCollapse"
 <template>
   <el-aside>
     <el-menu router unique-opened :collapse="isCollapse">
-      <a href="/" class="logo">
+      <a href="/CourseView" class="logo">
         <img src="@/assets/img/logo.png" alt="" />
         <h1>实验室预约</h1>
       </a>
@@ -22,6 +22,12 @@ import { isCollapse } from "./isCollapse"
           <IEpCalendar />
         </el-icon>
         <span>课程管理</span>
+      </el-menu-item>
+      <el-menu-item index="/ReservationView">
+        <el-icon>
+          <IEpTimer />
+        </el-icon>
+        <span>实验室预约</span>
       </el-menu-item>
 
       <el-menu-item index="/notice/">
