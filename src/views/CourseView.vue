@@ -2,9 +2,14 @@
   <div class="page-container">
     <div class="input-section">
       <!-- 输入实验室ID的表单 -->
-       <el-select v-model="labId" style="width:300px;">
-          <el-option v-for="(l,index) in labs" :key="index" :value="l.id" :label="l.name+'实验室'"></el-option>
-       </el-select>
+      <el-select v-model="labId" style="width: 300px">
+        <el-option
+          v-for="(l, index) in labs"
+          :key="index"
+          :value="l.id"
+          :label="l.name + '实验室'"
+        ></el-option>
+      </el-select>
       <button @click="fetchReservations" class="fetch-button">查询</button>
     </div>
     <div v-if="loading" class="loading-message">正在加载课程数据...</div>
@@ -52,7 +57,7 @@
         </tr>
         <!-- 课程信息 -->
         <tr class="class-tr" v-for="(weekindex, index) in 18" :key="index">
-          <td style="padding: 2px 0px" class="week-cell week-cell-dark">
+          <td class="table-header">
             第
             <br />
             {{ weekindex }}
@@ -65,12 +70,15 @@
               class="class-info"
               v-if="getCourseByWeekDaySection(weekindex, c.section, c.dayOfWeek)"
             >
-              <span class="course-teacher"> </span>
+              <span class="course-teacher"
+                >{{ getCourseByWeekDaySection(weekindex, c.section, c.dayOfWeek).teacherName }}
+              </span>
               <br />
-              {{ getCourseByWeekDaySection(weekindex, c.section, c.dayOfWeek).teacherName }}
 
-              <span class="course-name"></span>
-              {{ getCourseByWeekDaySection(weekindex, c.section, c.dayOfWeek).courseName }}
+              <span class="course-name">{{
+                getCourseByWeekDaySection(weekindex, c.section, c.dayOfWeek).courseName
+              }}</span>
+
             </div>
             <div v-else>
               <span class="no-course">无课程</span>
@@ -83,9 +91,9 @@
 </template>
 
 <script setup lang="ts">
+import { get } from '@/api/admin'
 import axios from '@/stores/axios'
 import { reactive, ref } from 'vue'
-import { get } from '@/api/admin'
 
 // 周和天的信息
 const datelist = reactive([
@@ -172,7 +180,7 @@ const getCourseByWeekDaySection = (week: number, section: number, dayOfWeek: num
     }) || null
   )
 }
-const labs=ref([])
+const labs = ref([])
 const getLabs = async () => {
   const url = 'user/labs'
   try {
@@ -185,8 +193,6 @@ const getLabs = async () => {
 }
 onMounted(getLabs)
 console.log(labs)
-
-
 </script>
 
 <style scoped>
@@ -250,10 +256,8 @@ console.log(labs)
 /* 课程表容器样式 */
 .class-table-container {
   width: 100%;
-  max-width: 1000px; /* 限制最大宽度，避免表格过宽 */
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* 给表格添加轻微阴影 */
   border-radius: 5px;
-  overflow: hidden;
 }
 
 /* 课程表标题样式 */
@@ -299,10 +303,13 @@ console.log(labs)
 }
 
 .class-info {
+  width:60px;
   margin-bottom: 5px;
 }
 
 .course-teacher {
+  display: block;
+  width:60px;
   color: red;
   font-weight: bold;
   font-size: 16px;

@@ -38,8 +38,10 @@ const onSubmit = async () => {
     store.saveToken(response.data.data) // 确保保存完整的用户数据
     console.log(response.headers.token)
     console.log(response.headers.role)
+    console.log(response.data.data.id)
     localStorage.setItem('token', response.headers.token)
     localStorage.setItem('role', response.headers.role)
+    localStorage.setItem('uid',response.data.data.id)
 
     //ElMessage.success('登录成功!')
     router.push((route.query.redirect as string) || '/')

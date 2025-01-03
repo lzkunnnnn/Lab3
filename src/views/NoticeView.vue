@@ -24,7 +24,7 @@ const announcements = ref([])
 const loading = ref(true)
 
 const getAnnouncements = async () => {
-  const url = 'admin/announcements'
+  const url = 'user/announcements'
   try {
     announcements.value = await get(url)
     loading.value = true

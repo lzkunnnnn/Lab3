@@ -10,12 +10,12 @@ import { isCollapse } from './isCollapse'
         <img src="@/assets/img/logo.png" alt="" />
         <h1>实验室预约</h1>
       </a>
-      <!-- <el-menu-item index="/MenusView">
+     <el-menu-item index="/user">
         <el-icon>
           <IEpConnection />
         </el-icon>
         <span>用户管理</span>
-      </el-menu-item> -->
+      </el-menu-item>
 
       <el-menu-item index="/CourseView">
         <el-icon>

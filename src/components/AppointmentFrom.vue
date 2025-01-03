@@ -16,7 +16,7 @@
 
       <br />
       <el-form-item label="预约周次">
-        <el-slider v-model="value" :marks="marks" range show-stops :max="18"> </el-slider>
+        <el-slider v-model="value" :marks="marks" range show-stops :min="1" :max="18"> </el-slider>
       </el-form-item>
       <br />
       <el-form-item label="预约星期" prop="dayOfWeek">
@@ -61,7 +61,7 @@ const form = reactive<appointInfo>({
   section: [{ required: true, message: '请选择节次', trigger: 'blur' }],
 }
 
-const value = ref([0, 0])
+const value = ref([1, 1])
 const marks = ref({
   1: '1',
   2: '2',
@@ -132,18 +132,17 @@ form.courseName = computed(() => {
 
 const onSubmit = () => {
 
-  form.startWeek=value.value[0]
-  form.endWeek=value.value[1]
-  form.courseName = courses.value.find((c)=>c.id===form.courseId).name
+  form.startWeek = value.value[0]
+  form.endWeek = value.value[1]
+  form.courseName = courses.value.find((c)=>c.id===form.courseId)?.name
 
   console.log(form)
   formRef.value.validate((valid) => {
-    console.log('Validation result:', valid);
     if (valid) {
       appoint(form)
         .then((response) => {
-          if (response) {
-            formRef.value.resetFields()
+          if (response.data) {
+            console.log(response)
           } else {
             alert('添加失败')
           }

@@ -66,3 +66,29 @@ export const appoint = (appoint:appointInfo) =>{
     },
   })
 }
+
+
+export type Course={
+  id:string
+  name:string
+  quantity:number
+  lesson:number
+  classInfo:string
+  major:string
+  teacherId:string
+}
+
+export const addCourse = (course:Course)=>{
+  return axios({
+    method: 'POST',
+    url: 'user/addCourse',
+    data: {
+      name:course.name,
+      quantity:course.quantity,
+      lesson:course.lesson,
+      major:course.major,
+      classInfo:course.classInfo,
+      teacherId:course.teacherId
+    },
+  })
+}
