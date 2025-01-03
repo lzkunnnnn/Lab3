@@ -81,8 +81,13 @@ const router = createRouter({
           name:'notice',
           component: ()=> import('@/views/NoticeView.vue'),
           children:[
-            
+
           ]
+        },
+        {
+          path:'/appoint',
+          name:'appoint',
+          component:()=>import('@/components/AppointmentFrom.vue')
         }
         ,
         {

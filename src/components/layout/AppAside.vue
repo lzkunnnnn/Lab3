@@ -31,6 +31,13 @@ import { isCollapse } from "./isCollapse"
         <span>公告</span>
       </el-menu-item>
 
+      <el-menu-item index="/appoint/">
+        <el-icon>
+          <IEpMessageBox />
+        </el-icon>
+        <span>实验室预约</span>
+      </el-menu-item>
+
       <el-menu-item index="/admin/">
         <el-icon>
           <IEpAvatar />

@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import axios from '@/stores/axios'
 
 // 用户登录 - 参数类型
 type LoginInfo = {
@@ -35,3 +36,33 @@ export const login = (loginInfo: LoginInfo) => {
   return
 }
  */
+
+
+
+
+
+export type appointInfo={
+  courseId:string
+  courseName:string
+  labId:string
+  startWeek:string
+  endWeek:string
+  dayOfWeek:string
+  section:string
+}
+
+export const appoint = (appoint:appointInfo) =>{
+  return axios({
+    method: 'POST',
+    url: 'user/reserve-range',
+    data: {
+      courseId:appoint.courseId,
+      courseName:appoint.courseName,
+      labId:appoint.labId,
+      startWeek:appoint.startWeek,
+      endWeek:appoint.endWeek,
+      dayOfWeek:appoint.dayOfWeek,
+      section:appoint.section
+    },
+  })
+}
